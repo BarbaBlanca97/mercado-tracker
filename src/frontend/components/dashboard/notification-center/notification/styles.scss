@@ -1,0 +1,35 @@
+@import '../../../../globalVariables.scss';
+
+.notification {
+    border-radius: $border-radius;
+
+    margin-bottom: .5em;
+    margin-left: 1em;
+    margin-right: 1em;
+
+    pointer-events: all;
+
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 1em;
+
+    -moz-box-shadow: 2px 2px 4px 0px rgba(181,181,181,1);
+    box-shadow: 2px 2px 4px 0px rgba(181,181,181,1);
+
+    font-size: .9em;
+}
+
+.notification.error {
+    background-color: $warn-color;
+}
+
+.notification-close {
+    width: 1.5em;
+    height: 1.5em;
+
+    margin-bottom: auto;
+    margin-left: auto;
+
+    cursor: pointer;
+}

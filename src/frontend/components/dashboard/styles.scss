@@ -1,0 +1,39 @@
+@import '../../globalVariables.scss';
+
+#dashboard-navbar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    background-color: white;
+    border-bottom: solid 1px $outline-color;
+
+    padding: .5em 1em;
+}
+
+#dashboard-navbar-header {
+    font-family: 'Roboto Condensed', sans-serif;
+    margin: 0;
+}
+
+#dashboard-navbar-side {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+}
+
+#dashboard-navbar-user {
+    font-size: .9em;
+    margin-right: 7px;
+
+    display: flex;
+    align-items: center;
+}
+
+#dashboard-product-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    justify-content: center;
+}

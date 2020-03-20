@@ -1,0 +1,48 @@
+{
+  "name": "mercado-tracker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "@babel/polyfill": "^7.7.0",
+    "@sendgrid/mail": "^6.4.0",
+    "@types/cookie-parser": "^1.4.2",
+    "axios": "^0.19.0",
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.4",
+    "express": "^4.17.1",
+    "js-cookie": "^2.2.1",
+    "jwt-simple": "^0.5.6",
+    "pg": "^7.14.0",
+    "query-string": "^6.9.0",
+    "react-icons": "^3.9.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.7.7",
+    "@babel/plugin-proposal-class-properties": "^7.7.4",
+    "@babel/preset-env": "^7.7.7",
+    "@babel/preset-react": "^7.7.4",
+    "@types/express": "^4.17.2",
+    "@types/node": "^12.12.14",
+    "@types/pg": "^7.11.2",
+    "babel-loader": "^8.0.6",
+    "css-loader": "^3.2.1",
+    "node-sass": "^4.13.0",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-router-dom": "^5.1.2",
+    "sass-loader": "^8.0.0",
+    "style-loader": "^1.1.2",
+    "ts-loader": "^6.2.1",
+    "ts-node-dev": "^1.0.0-pre.44",
+    "typescript": "^3.7.2",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.10.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "barbablanca97",
+  "license": "ISC"
+}

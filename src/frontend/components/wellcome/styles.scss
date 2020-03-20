@@ -1,0 +1,18 @@
+#wellcome-container {
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+
+    margin: 2em;
+}
+
+#wellcome-header {
+    font-family: 'Roboto Condensed', sans-serif;
+    margin-bottom: 0;
+}
+
+#wellcome-actions {
+    display: flex;
+    flex-direction: row;
+}

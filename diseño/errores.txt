@@ -1,0 +1,11 @@
+¿Que errores tenemos? ( que se throween desde el backend como respuesta al cliente ).
+
+En el login:
+- usuario incorrecto.
+- contraseña incorrecta.
+
+En la verificacion de correo:
+- token invalido.
+
+En el dashboard:
+- agregar un producto que no existe o que no se puede resolver su id.

@@ -1,0 +1,40 @@
+@import '../../../globalVariables.scss';
+
+#dashboard-add_product {
+    // height: 35px;
+    display: flex;
+    flex-direction: row;
+
+    margin: .5em 1.5em 1.5em 1.5em;
+
+    align-items: stretch;
+}
+
+#dashboard-add_product-input {
+    width: 100%;
+    margin-bottom: 0;
+}
+
+#dashboard-add_product-button {
+    flex-shrink: 0;
+    margin: 0;
+    margin-left: 7px;
+}
+
+@media only screen and ( max-width: 640px ) {
+    #dashboard-add_product {
+        flex-direction: column;
+        align-items: stretch;
+        margin-left: .5em;
+        margin-right: .5em;
+    }
+
+    #dashboard-add_product-button {
+        margin: 0;
+    }
+
+    #dashboard-add_product-input {
+        width: auto;
+        margin-bottom: .5em;
+    }
+}

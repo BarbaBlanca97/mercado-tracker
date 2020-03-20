@@ -1,0 +1,19 @@
+Pitch del backend:
+
+Endpoints para:
+- Registrar un usuario
+- Ingresar con un usuario
+- Cambiar la contraseña de un usuario
+- Ver todos los items
+- Registrar un nuevo item para un usuario
+- Permitir a un usuario darse dejar de seguir un item
+- Validar correo electrónico
+
+Ciclo de vida y tareas:
+- El servidor arranca y comienza a revisar los productos de ml y busca diferencias en los precios, si la encuentra actualiza la informacion del producto y notifica por correo al usuario
+
+/api
+	/login - POST
+	/users - POST
+		/:userId - PATCH
+			/products - GET, POST, DELETE

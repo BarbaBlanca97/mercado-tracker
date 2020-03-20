@@ -1,0 +1,23 @@
+#make-password-reset {
+    max-width: 800px;
+    width: 75%;
+    
+    margin: 21px auto;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#make-password-reset-form {
+    max-width: 500px;
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    button {
+        flex-grow: 0;
+        align-self: flex-start;
+    }
+}

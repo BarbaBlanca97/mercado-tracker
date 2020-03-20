@@ -1,0 +1,13 @@
+#config-change_password-form {
+    display: flex;
+    flex-direction: column;
+
+    margin: auto;
+
+    width: 100%;
+}
+
+#config-button-confirm {
+    flex-grow: 0;
+    align-self: flex-end;
+}

@@ -1,0 +1,26 @@
+@import '../../globalVariables.scss';
+
+#login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+
+    width: 100%;
+    max-width: 480px;
+
+    margin: 2em;
+
+    button {
+        margin: 0;
+    }
+}
+
+#login-form {
+    display: flex;
+    flex-direction: column;
+}
+
+#login-forgot-password {
+    width: 100%;
+    margin-top: .5em !important;
+}

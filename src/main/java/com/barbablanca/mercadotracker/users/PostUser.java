@@ -3,44 +3,28 @@ package com.barbablanca.mercadotracker.users;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.hash.Hashing;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 public class PostUser {
+    @NotNull( message = "Debe proporcionar un nombre de usuario")
+    @NotBlank( message = "Debe proporcionar un nombre de usuario")
     @JsonProperty("username")
     private String username;
+    @NotNull
+    @Email( message = "El formato de correo electónico no es válido")
     @JsonProperty("email")
     private String email;
+    @NotNull( message = "Debe proporcionar una contraseña")
+    @NotBlank( message = "Debe proporcionar una contraseña")
+    @Size(min = 6, message = "La contraseña debe tener 6 caracteres como mínimo")
     @JsonProperty("password")
     private String password;
 
-    private String error = "";
-
     PostUser () {}
-
-    public Boolean isValid() {
-        if (username == null || username.equals("")) {
-            error = "Debe proporcionar un nombre de usuario";
-            return false;
-        }
-
-        if (email == null || email.equals("")) {
-            error = "Debe proporcionar correo electrónico";
-            return false;
-        }
-
-        if (password == null || password.equals("")) {
-            error = "Debe proporcionar una contraseña";
-            return false;
-        }
-
-        return true;
-    }
-
-    public String getError() {
-        return error;
-    }
 
     public UserEntity asUserEntity() {
         String hashedPassword = Hashing.sha256()

@@ -9,10 +9,17 @@ import com.sendgrid.SendGrid;
 import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Email;
 import com.sendgrid.helpers.mail.objects.Personalization;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
+@Service
 public class MailSender {
+
+    Logger log = LoggerFactory.getLogger(MailSender.class);
+
     private final PendingVerificationsRepository pendingVerificationsRepository;
     private final SendGrid sendGrid;
 
@@ -49,13 +56,13 @@ public class MailSender {
 
         Response response = sendGrid.api(request);
 
-        System.out.println("Send email response status: "+ response.getStatusCode());
-        System.out.println(response.getBody());
+        log.info("Sended email response status: "+ response.getStatusCode());
+        log.info(response.getBody());
     }
 
     public void sendNotification(UserEntity to, ProductEntity product) throws IOException {
         if (!to.getVerified()) {
-            System.out.println("El usuario"+ to.getId() +" no está verificado, no se enviará la noctificacion");
+            log.info("El usuario"+ to.getId() +" no está verificado, no se enviará la noctificacion");
             return;
         }
 
@@ -103,14 +110,14 @@ public class MailSender {
 
         Response response = sendGrid.api(request);
 
-        System.out.println("Send email response status: "+ response.getStatusCode());
-        System.out.println(response.getBody());
+        log.info("Send email response status: "+ response.getStatusCode());
+        log.info(response.getBody());
     }
 
 
     public void sendPasswordResetCode(UserEntity to, Integer code) throws IOException {
         if (!to.getVerified()) {
-            System.out.println("El usuario"+ to.getId() +" no está verificado, no se enviará la noctificacion");
+            log.info("El usuario"+ to.getId() +" no está verificado, no se enviará la noctificacion");
             return;
         }
 
@@ -136,7 +143,7 @@ public class MailSender {
 
         Response response = sendGrid.api(request);
 
-        System.out.println("Send email response status: "+ response.getStatusCode());
-        System.out.println(response.getBody());
+        log.info("Send email response status: "+ response.getStatusCode());
+        log.info(response.getBody());
     }
 }

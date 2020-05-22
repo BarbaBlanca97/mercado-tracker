@@ -1,6 +1,6 @@
 package com.barbablanca.mercadotracker.products;
 
-import com.barbablanca.mercadotracker.exceptions.ProductNotFoundException;
+import com.barbablanca.mercadotracker.exceptions.CustomException;
 import com.barbablanca.mercadotracker.security.PrincipalCredentials;
 import com.barbablanca.mercadotracker.users.UserEntity;
 import com.barbablanca.mercadotracker.users.UserRepository;
@@ -9,14 +9,15 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.persistence.EntityNotFoundException;
+import javax.validation.Valid;
 import java.util.Objects;
 import java.util.Set;
 
 @RestController()
 public class ProductController {
-    private ProductRepository productsRepository;
-    private UserRepository userRepository;
-    private RestTemplate restTemplate;
+    private final ProductRepository productsRepository;
+    private final UserRepository userRepository;
+    private final RestTemplate restTemplate;
 
     ProductController(ProductRepository productsRepository, UserRepository userRepository, RestTemplate restTemplate) {
         this.productsRepository = productsRepository;
@@ -25,7 +26,7 @@ public class ProductController {
     }
 
     @PostMapping("api/users/{userId}/products")
-    public ProductEntity createProduct(@RequestBody PostProduct productInfo) throws Exception {
+    public ProductEntity createProduct(@Valid @RequestBody PostProduct productInfo) throws Exception {
         Integer userId = ( (PrincipalCredentials) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
         UserEntity user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException());
 
@@ -38,7 +39,7 @@ public class ProductController {
         ));
 
         if (response.length == 0 || response[0].getCode().equals(404)) {
-            throw new ProductNotFoundException(productInfo.getId());
+            throw new CustomException(404, "No se puede recuperar el producto "+ productInfo.getId() +" de MercadoLibre");
         }
 
         ProductEntity product = response[0].getBody().asProductEntity();

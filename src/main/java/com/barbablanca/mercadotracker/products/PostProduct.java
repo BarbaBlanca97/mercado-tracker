@@ -1,12 +1,16 @@
 package com.barbablanca.mercadotracker.products;
 
-import com.barbablanca.mercadotracker.exceptions.IdNotFoundException;
+import com.barbablanca.mercadotracker.exceptions.CustomException;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class PostProduct {
+    @NotNull(message = "Debe ingresar la url del producto")
+    @NotBlank(message = "Debe ingresar la url del producto")
     @JsonProperty("url")
     String url;
 
@@ -24,7 +28,7 @@ public class PostProduct {
             return matcher.group("id").replace("-", "");
         }
         else {
-            throw new IdNotFoundException();
+            throw new CustomException(404, "No pudo recuperar el id del producto de la url");
         }
     }
 }

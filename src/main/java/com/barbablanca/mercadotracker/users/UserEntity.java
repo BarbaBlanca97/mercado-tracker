@@ -1,6 +1,7 @@
 package com.barbablanca.mercadotracker.users;
 
 import com.barbablanca.mercadotracker.products.ProductEntity;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -17,6 +18,7 @@ public class UserEntity {
     @NotNull
     String email;
     @NotNull
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     String password;
     boolean verified;
 
@@ -25,7 +27,7 @@ public class UserEntity {
             name = "user_product",
             joinColumns = @JoinColumn( name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn( name = "product_id", referencedColumnName = "id"))
-    private Set<ProductEntity> products = new HashSet<>();
+    private final Set<ProductEntity> products = new HashSet<>();
 
     protected UserEntity() {}
 

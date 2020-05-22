@@ -3,6 +3,8 @@ package com.barbablanca.mercadotracker.products;
 import com.barbablanca.mercadotracker.mailing.MailSender;
 import com.barbablanca.mercadotracker.prices.PriceEntity;
 import com.barbablanca.mercadotracker.users.UserEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -15,6 +17,8 @@ import java.util.Objects;
 
 @Component
 public class ProductsChecker {
+    Logger logger = LoggerFactory.getLogger(ProductsChecker.class);
+
     private final ProductRepository productRepository;
     private final RestTemplate restTemplate;
     private final MailSender mailSender;
@@ -48,6 +52,8 @@ public class ProductsChecker {
     @Scheduled(fixedDelay = 36000000, initialDelay = 5000)
     public void check() throws IOException {
 
+        logger.info("Started product check");
+
         List<ProductEntity> products = (List<ProductEntity>) productRepository.findAll();
 
         int iterations =  (new Double(Math.ceil(products.size() / 20f))).intValue();
@@ -70,6 +76,7 @@ public class ProductsChecker {
             ids = ids.substring(1, ids.length() - 1);
             ids = ids.replace(" ", "");
 
+            logger.info("Fetching product info from Mercadolibre...");
             MLProductResponse[] response = Objects.requireNonNull(
                     restTemplate.getForObject(
                             "https://api.mercadolibre.com/items?ids="+ ids +
@@ -84,18 +91,32 @@ public class ProductsChecker {
 
                     ProductEntity localProduct = findProductById(products, mlProduct.getId());
 
+                    if (mlProduct.getPrice() == null) {
+                        localProduct.setPrevPrice(localProduct.getCurPrice());
+                        localProduct.setCurPrice(
+                                new PriceEntity(0f, localProduct.getCurPrice().getCurrency(), new Date()));
+
+                        productRepository.save(localProduct);
+                        continue;
+                    }
+
                     if (localProduct == null) continue;
 
-                    System.out.println(
-                            "Comparing loacal product "+
+                    logger.info(
+                            "Comparing local product "+
                             localProduct.getId()                        +": $ " +
                             localProduct.getCurPrice().getAmount()      +" "    +
                             localProduct.getCurPrice().getCurrency()    +
-                            " against ML product "+ mlProduct.getId()   +": $ " +
+                            " against fetched product "+ mlProduct.getId()   +": $ " +
                             mlProduct.getPrice()                        +" "    +
                             mlProduct.getCurrency());
 
                     if (!mlProduct.getPrice().equals(localProduct.getCurPrice().getAmount())) {
+
+                        logger.info(
+                                "The price for "+ localProduct.getId() +": "+ localProduct.getName()
+                                        +" has changed from" + localProduct.getCurPrice().getAmount() + localProduct.getCurPrice().getCurrency()
+                                        +" to "+ mlProduct.getPrice() + mlProduct.getCurrency());
 
                         localProduct.setPrevPrice(localProduct.getCurPrice());
                         localProduct.setCurPrice(new PriceEntity(

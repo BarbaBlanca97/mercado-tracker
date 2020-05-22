@@ -4,6 +4,9 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -14,12 +17,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
+import java.util.Objects;
 
 public class AuthorizationFilter extends OncePerRequestFilter {
-    static final JWTVerifier verifier;
 
-    static {
-        Algorithm algorithm = Algorithm.HMAC256("secret");
+    Logger log = LoggerFactory.getLogger(AuthorizationFilter.class);
+
+    private final JWTVerifier verifier;
+
+    Environment env;
+
+    public AuthorizationFilter(Environment env) {
+        this.env = env;
+        Algorithm algorithm = Algorithm.HMAC256(Objects.requireNonNull(env.getProperty("JWT_SECRET")));
         verifier = JWT.require(algorithm).build();
     }
 
@@ -42,7 +52,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
                          decodedJWT.getClaim("username").asString()
                  );
 
-                 System.out.println("Authorized user " + principal.getId() + ": " + principal.getName());
+                 log.info("Authorized user " + principal.getId() + ": " + principal.getName());
 
                  SecurityContextHolder.getContext()
                          .setAuthentication(new UsernamePasswordAuthenticationToken(principal, token, null));
@@ -62,7 +72,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
                  response.addHeader("authorization", refreshToken);
              }
              catch (Exception e) {
-                 System.out.println("An error ocurred trying to authorize a request " +  e.getMessage());
+                 log.error("An error ocurred trying to authorize a request " +  e.getMessage());
              }
         }
 

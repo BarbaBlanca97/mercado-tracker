@@ -1,4 +1,6 @@
 node_modules
+application-dev.properties
+sendgrid_api_key.txt
 
 HELP.md
 .gradle

@@ -21,9 +21,10 @@ const WellcomeScreen = function ({ logedIn, onLogin }) {
             <Switch>
                 <Route
                     path='/login'
-                    render={ () => (    <LogIn 
+                    render={ (match) => (    <LogIn 
                                             onLogin={ onLogin }
                                             logedIn={ logedIn }
+                                            match={ match }
                                         /> ) }
                 />
                 <Route path='/signin' component={ SignIn } />

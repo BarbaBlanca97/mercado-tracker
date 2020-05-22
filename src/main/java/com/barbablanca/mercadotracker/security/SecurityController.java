@@ -2,12 +2,14 @@ package com.barbablanca.mercadotracker.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.barbablanca.mercadotracker.exceptions.BadCredentialsException;
-import com.barbablanca.mercadotracker.exceptions.BadPasswordResetAttempt;
+import com.barbablanca.mercadotracker.exceptions.CustomException;
 import com.barbablanca.mercadotracker.mailing.MailSender;
 import com.barbablanca.mercadotracker.users.UserEntity;
 import com.barbablanca.mercadotracker.users.UserRepository;
 import com.google.common.hash.Hashing;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.env.Environment;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -18,30 +20,44 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.persistence.EntityNotFoundException;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.Objects;
 
 @RestController
 public class SecurityController {
 
+    Logger log = LoggerFactory.getLogger(SecurityController.class);
+
     private final UserRepository userRepository;
     private final PasswordResetRepository passwordResetRepository;
     private final MailSender mailSender;
+    private final Environment env;
 
-    SecurityController(UserRepository userRepository, PasswordResetRepository passwordResetRepository, MailSender mailSender) {
+    SecurityController(
+            UserRepository userRepository,
+            PasswordResetRepository passwordResetRepository,
+            MailSender mailSender,
+            Environment env
+    ) {
         this.userRepository = userRepository;
         this.passwordResetRepository = passwordResetRepository;
         this.mailSender = mailSender;
+        this.env = env;
     }
 
     @PostMapping("api/login")
-    public ResponseEntity<UserEntity> login(@RequestBody LoginCredentials credentials) throws BadCredentialsException {
+    public ResponseEntity<UserEntity> login(@Valid @RequestBody LoginCredentials credentials) throws CustomException {
 
-        UserEntity user = userRepository.findByNameAndPassword(credentials.username, credentials.getPassword())
-                    .orElseThrow(BadCredentialsException::new);
+        UserEntity user = userRepository.findByNameOrEmail(credentials.username, credentials.username)
+                    .orElseThrow(() -> new CustomException(401, "Usuario y/o contraseña incorrectos"));
 
-        Algorithm algorithm = Algorithm.HMAC256("secret");
+        if (!user.getPassword().equals(credentials.getPassword()))
+            throw new CustomException(401, "Usuario y/o contraseña incorrectos");
+
+        Algorithm algorithm = Algorithm.HMAC256(Objects.requireNonNull(env.getProperty("JWT_SECRET")));
 
         Date expiresAt = new Date();
         expiresAt.setTime(expiresAt.getTime() + 900000);
@@ -67,7 +83,7 @@ public class SecurityController {
     }
 
     @PostMapping("api/reset/solicite")
-    public ResponseEntity registerPasswordReset (@RequestBody PasswordResetRequest passwordResetRequest) throws IOException {
+    public Boolean registerPasswordReset (@Valid @RequestBody PasswordResetRequest passwordResetRequest) throws IOException {
         UserEntity user = userRepository.findByEmail(passwordResetRequest.getEmail());
 
         if (user != null) {
@@ -78,24 +94,23 @@ public class SecurityController {
                 passwordResetRepository.save(passwordReset);
                 mailSender.sendPasswordResetCode(user, code);
             }
-            catch (DataAccessException exception) { System.out.println(exception.getMessage()); }
+            catch (DataAccessException exception) {
+                log.error(exception.getMessage());
+            }
         }
 
-        return new ResponseEntity(HttpStatus.OK);
+        return true;
     }
 
     @PostMapping("api/reset/make")
-    public Boolean makePasswordReset(@RequestBody PasswordResetMake passwordResetMake) throws BadPasswordResetAttempt {
-        if (!passwordResetMake.isValid()) {
-            throw new BadPasswordResetAttempt(passwordResetMake.getError());
-        }
+    public Boolean makePasswordReset(@Valid @RequestBody PasswordResetMake passwordResetMake) throws CustomException {
 
         String codeHash = Hashing.sha256()
                 .hashString(passwordResetMake.getCode().toString(), StandardCharsets.UTF_8)
                 .toString();
 
         PasswordReset passwordReset = passwordResetRepository.findByCodeHash(codeHash)
-                .orElseThrow(() -> new BadPasswordResetAttempt("El codigo ingresado no parece ser válido"));
+                .orElseThrow(() -> new CustomException(400, "El codigo ingresado no parece ser válido"));
 
         UserEntity user = passwordReset.getUser();
         user.setPassword(passwordResetMake.getNewPassword());

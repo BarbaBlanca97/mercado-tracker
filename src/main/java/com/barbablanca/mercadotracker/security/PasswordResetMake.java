@@ -3,15 +3,20 @@ package com.barbablanca.mercadotracker.security;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.hash.Hashing;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.nio.charset.StandardCharsets;
 
 public class PasswordResetMake {
+    @NotNull( message = "Debe proporcionar un codigo")
     @JsonProperty
     private Integer code;
+    @NotNull( message = "Debe proporcionar una contraseña")
+    @NotBlank( message = "Debe proporcionar una contraseña")
+    @Size(min = 6, message = "La contraseña debe tener 6 caracteres como mínimo")
     @JsonProperty
     private String newPassword;
-
-    private String error;
 
     PasswordResetMake () {}
 
@@ -26,18 +31,10 @@ public class PasswordResetMake {
     }
 
     public Boolean isValid() {
-        if (code == null || code.equals("")) {
-            error = "Debe ingresar el codigo"; return false;
-        }
-
-        if (newPassword == null || newPassword.equals("")) {
-            error = "Debe ingresar la nueva contraseña"; return false;
-        }
-
         return true;
     }
 
     public String getError() {
-        return error;
+        return "";
     }
 }

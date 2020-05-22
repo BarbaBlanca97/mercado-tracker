@@ -1,6 +1,5 @@
 import React from 'react';
 import ErrorDisplay from '../../error-display';
-import httpRequest from '../../../httpRequest';
 import withHttpRequest from '../../../HOCs/withHttpRequest';
 
 import './styles.scss';
@@ -41,14 +40,19 @@ class ChangePassword extends React.Component {
         })
         .then(response => {
             if (response)
-                this.setState({ success: true, hasError: false })
+                this.setState({ 
+                    success: true, 
+                    hasError: false, 
+                    oldPassword: '', 
+                    newPassword: '', 
+                    confirmPassword: '' 
+                });
             else
                 throw { message: 'Algo salió mal' }
         })
         .catch(this.props.errorHandler(response => {
             this.setState({ hasError: true, errorMessage: response.message, success: false })
-        })
-        .finally(_ => { this.setState({ oldPassword: '', newPassword: '', confirmPassword: '' }) }));
+        }));
     }
 
     render () {

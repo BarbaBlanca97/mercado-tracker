@@ -9,9 +9,9 @@ export default function (Component) {
         }
 
         errorHandler = (handler) => {
-            return function(error) {
-                if ( error === -1 ) return;
-    
+            return function (error) {
+                if (error === -1) return;
+
                 handler(error);
             }
         }
@@ -22,36 +22,36 @@ export default function (Component) {
                 credentials: 'include',
                 headers: {}
             };
-            
+
             if (data) {
                 requestInfo.headers = { 'Content-Type': 'application/json' };
                 requestInfo.body = JSON.stringify(data);
             }
-        
+
             let accesToken = localStorage.getItem('authorization');
 
             if (accesToken) {
                 requestInfo.headers['Authorization'] = accesToken;
             }
-            
+
             const request = new Request(url, requestInfo);
             console.log('sending request: ', request);
             const response = await fetch(request);
             console.log('response recived: ')
             const responseData = await response.json();
-        
+
             accesToken = response.headers.get('Authorization');
-            if (accesToken) 
+            if (accesToken)
                 localStorage.setItem('authorization', accesToken);
-            
+
             if (response.ok) {
                 console.log(responseData);
                 return responseData;
             }
             else {
 
-                if ( url != '/api/login' && response.status === 403 || response.status === 401 ) {
-                    this.onUnAuthorized();
+                if (url != '/api/login' && (response.status === 403 || response.status === 401)) {
+                    this.onUnAuthorized(true);
                     throw -1;
                 }
 
@@ -67,21 +67,21 @@ export default function (Component) {
 
             return (
                 <Component
-                httpRequest = { this.httpRequest }
-                errorHandler = { this.errorHandler }
-                { ...props }
+                    httpRequest={this.httpRequest}
+                    errorHandler={this.errorHandler}
+                    {...props}
                 >
-                    { children }
+                    {children}
                 </Component>
             );
         }
 
-        render () {
+        render() {
 
             if (this.state.preventRendering) return null;
 
             return <ApplicationContext.Consumer>
-            { this.assignHandlerAndRender }
+                {this.assignHandlerAndRender}
             </ApplicationContext.Consumer>
         }
     };

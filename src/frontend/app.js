@@ -37,16 +37,16 @@ class App extends React.Component {
         onUnAuthorized: this.handleUnauthorized
     }
 
-    componentDidMount () {
+    componentDidMount() {
         httpRequest('/api/authenticate-token', 'POST')
-        .then(response => {
-            this.setState({ logedIn: true, awaitingServer: false, user: response, products: response.products });
-        })
-        .catch(_ => { 
-            this.setState({ awaitingServer: false });
-        });
+            .then(response => {
+                this.setState({ logedIn: true, awaitingServer: false, user: response, products: response.products });
+            })
+            .catch(_ => {
+                this.setState({ awaitingServer: false });
+            });
     }
-    
+
     handleLogin = (user) => {
         this.setState({ logedIn: true, user, products: user.products });
     }
@@ -60,76 +60,76 @@ class App extends React.Component {
         this.setState({ products });
     }
 
-    render () {
+    render() {
         const { logedIn, awaitingServer, user, products } = this.state;
         const handleLogin = this.handleLogin;
-        const handleLogOut = this.handleLogOut;   
+        const handleLogOut = this.handleLogOut;
 
 
         if (awaitingServer)
-            return <div> Aguarde un momento </div>; 
+            return <div> Aguarde un momento </div>;
 
         return (
             <ApplicationContext.Provider value={{ onUnAuthorized: this.state.onUnAuthorized }}>
-            <Router>
-                <Switch>
-                    <ProtectedRoute 
-                        logedIn={ logedIn } 
-                        exact 
-                        path='/dashboard' 
-                        render={ () => (
-                            <DashboardScreen 
-                                user={ user } 
-                                products={ products }
-                                onProductsChange={ this.handleProductsChange }
-                                onLogOut={ handleLogOut } 
-                            />) } 
-                    />
+                <Router>
+                    <Switch>
+                        <ProtectedRoute
+                            logedIn={logedIn}
+                            exact
+                            path='/dashboard'
+                            render={() => (
+                                <DashboardScreen
+                                    user={user}
+                                    products={products}
+                                    onProductsChange={this.handleProductsChange}
+                                    onLogOut={handleLogOut}
+                                />)}
+                        />
 
-                    <ProtectedRoute 
-                        logedIn={ logedIn } 
-                        exact 
-                        path='/config' 
-                        render={ () => (
-                            <ConfigScreen 
-                                user={ user } 
-                            />) }   
-                    />
-                    
-                    <Route 
-                        exact 
-                        path='/verify/:token'
-                        component={ MailVerification } 
-                    />
+                        <ProtectedRoute
+                            logedIn={logedIn}
+                            exact
+                            path='/config'
+                            render={() => (
+                                <ConfigScreen
+                                    user={user}
+                                />)}
+                        />
 
-                    <Route
-                        exact
-                        path='/deleted'
-                        component={ AccountDeleted }
-                    ></Route>
+                        <Route
+                            exact
+                            path='/verify/:token'
+                            component={MailVerification}
+                        />
 
-                    <Route
-                        exact
-                        path='/reset/solicite'
-                        component={ SolicitePasswordReset }
-                    ></Route>
+                        <Route
+                            exact
+                            path='/deleted'
+                            component={AccountDeleted}
+                        ></Route>
 
-                    <Route
-                        exact
-                        path='/reset/make'
-                        component={ MakePasswordReset }
-                    ></Route>
+                        <Route
+                            exact
+                            path='/reset/solicite'
+                            component={SolicitePasswordReset}
+                        ></Route>
 
-                    <Route 
-                    path='/'
-                    render={ () => ( 
-                        <WellcomeScreen 
-                            logedIn={ logedIn } 
-                            onLogin={ handleLogin } 
-                        /> ) } 
-                    />
-                </Switch>
-            </Router>
+                        <Route
+                            exact
+                            path='/reset/make'
+                            component={MakePasswordReset}
+                        ></Route>
+
+                        <Route
+                            path='/'
+                            render={() => (
+                                <WellcomeScreen
+                                    logedIn={logedIn}
+                                    onLogin={handleLogin}
+                                />)}
+                        />
+                    </Switch>
+                </Router>
             </ApplicationContext.Provider>
         );
     }

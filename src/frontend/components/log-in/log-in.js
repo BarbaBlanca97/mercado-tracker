@@ -49,8 +49,7 @@ class LogIn extends React.Component {
             }
         })
         .catch(error => {
-            if (error.code === 401)
-                this.setState({ hasError: true, error });
+            this.setState({ hasError: true, error });
         });
     }
 
@@ -63,6 +62,12 @@ class LogIn extends React.Component {
         else
             return (
             <div id='login-container'>
+                { this.props.match.location.search.includes('expired') &&
+                    <ErrorDisplay>
+                        Ha pasado demasiado tiempo inactivo, vuelva a iniciar sesion
+                    </ErrorDisplay>
+                }
+
                 <h2> Log In </h2>
     
                 <form id='login-form' onSubmit={ this.handleFormSubmit }>

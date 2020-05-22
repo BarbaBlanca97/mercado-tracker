@@ -1,10 +1,8 @@
 package com.barbablanca.mercadotracker.security;
 
 import com.barbablanca.mercadotracker.users.UserEntity;
-import com.google.common.hash.Hashing;
 
 import javax.persistence.*;
-import java.nio.charset.StandardCharsets;
 import java.util.Random;
 
 @Entity
@@ -25,17 +23,15 @@ public class PasswordReset {
     public Integer generateCode() {
         Random random = new Random();
 
-        Integer code = (user.getId() * 100000) + random.nextInt(99999);
-
-        this.codeHash = Hashing.sha256()
-                .hashString(code.toString(), StandardCharsets.UTF_8)
-                .toString();
-
-        return code;
+        return (user.getId() * 100000) + random.nextInt(99999);
     }
 
     public String getCodeHash() {
         return codeHash;
+    }
+
+    public void setCodeHash(String codeHash) {
+        this.codeHash = codeHash;
     }
 
     public UserEntity getUser() {

@@ -5,11 +5,11 @@ import com.barbablanca.mercadotracker.mailing.MailSender;
 import com.barbablanca.mercadotracker.security.AuthorizationFilter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.client.RestTemplate;
 
 @EnableScheduling
@@ -28,5 +28,10 @@ public class MercadoTrackerApplication {
 	@Bean
 	public AuthorizationFilter authorizationFilter(Environment environment) {
 		return new AuthorizationFilter(environment);
+	}
+
+	@Bean
+	public BCryptPasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
 	}
 }

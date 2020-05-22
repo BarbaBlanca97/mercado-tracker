@@ -1,14 +1,18 @@
 package com.barbablanca.mercadotracker.users;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.hash.Hashing;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.nio.charset.StandardCharsets;
 
+@Getter
+@Setter
 public class PostUser {
     @NotNull( message = "Debe proporcionar un nombre de usuario")
     @NotBlank( message = "Debe proporcionar un nombre de usuario")
@@ -25,12 +29,4 @@ public class PostUser {
     private String password;
 
     PostUser () {}
-
-    public UserEntity asUserEntity() {
-        String hashedPassword = Hashing.sha256()
-                .hashString(password, StandardCharsets.UTF_8)
-                .toString();
-
-        return new UserEntity(username, email, hashedPassword, false);
-    }
 }

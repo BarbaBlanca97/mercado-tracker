@@ -1,12 +1,10 @@
 package com.barbablanca.mercadotracker.security;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.hash.Hashing;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.nio.charset.StandardCharsets;
 
 public class PasswordResetMake {
     @NotNull( message = "Debe proporcionar un codigo")
@@ -25,9 +23,7 @@ public class PasswordResetMake {
     }
 
     public String getNewPassword() {
-        return Hashing.sha256()
-                .hashString(newPassword, StandardCharsets.UTF_8)
-                .toString();
+        return newPassword;
     }
 
     public Boolean isValid() {

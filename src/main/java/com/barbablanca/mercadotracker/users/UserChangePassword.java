@@ -1,12 +1,12 @@
 package com.barbablanca.mercadotracker.users;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.hash.Hashing;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.nio.charset.StandardCharsets;
 
 public class UserChangePassword {
     @NotNull
@@ -19,17 +19,16 @@ public class UserChangePassword {
     @JsonProperty
     private String newPassword;
 
+    @Autowired
+    BCryptPasswordEncoder passwordEncoder;
+
     UserChangePassword() {}
 
     public String getOldPassword() {
-        return Hashing.sha256()
-                .hashString(oldPassword, StandardCharsets.UTF_8)
-                .toString();
+        return oldPassword;
     }
 
     public String getNewPassword() {
-        return  Hashing.sha256()
-                .hashString(newPassword, StandardCharsets.UTF_8)
-                .toString();
+        return newPassword;
     }
 }

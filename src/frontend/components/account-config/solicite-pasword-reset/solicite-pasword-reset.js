@@ -7,7 +7,8 @@ import { Link } from 'react-router-dom';
 class SolicitePasswordReset extends React.Component {
 
     state = {
-        email: ''
+        email: '',
+        serverResponded: false
     }
 
     handleInputChange = (event) => {
@@ -16,11 +17,12 @@ class SolicitePasswordReset extends React.Component {
 
     handleSendRequest = () => {
         this.props.httpRequest('/api/reset/solicite', 'POST', this.state)
-            .catch(_ => { });
+            .catch(_ => { })
+            .finally(_ => this.setState({ serverResponded: true }));
     }
 
     render() {
-        const { email } = this.state;
+        const { email, serverResponded } = this.state;
 
         return (
             <div id='solicite-password-reset'>
@@ -37,7 +39,7 @@ class SolicitePasswordReset extends React.Component {
                 />
 
                 <div>
-                    <button className='primary' onClick={this.handleSendRequest}> Enviar </button>
+                    { !serverResponded && <button className='primary' onClick={this.handleSendRequest}> Enviar </button>}
                     <Link to='/reset/make'>
                         <button> Ya recibí el correo </button>
                     </Link>

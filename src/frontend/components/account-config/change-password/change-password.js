@@ -1,6 +1,7 @@
 import React from 'react';
 import ErrorDisplay from '../../error-display';
 import withHttpRequest from '../../../HOCs/withHttpRequest';
+import RequestButton from '../../request-button';
 
 import './styles.scss';
 
@@ -11,7 +12,8 @@ class ChangePassword extends React.Component {
         confirmPassword: '',
         hasError: false,
         errorMessage: '',
-        success: false
+        success: false,
+        waitingResponse: false
     }
 
     handleInputChange = (event) => {
@@ -34,6 +36,7 @@ class ChangePassword extends React.Component {
             return;
         }
 
+        this.setState({ waitingResponse: true });
         this.props.httpRequest(`/api/users/${ this.props.user }`, 'PATCH', {
             oldPassword: this.state.oldPassword,
             newPassword: this.state.newPassword
@@ -52,11 +55,12 @@ class ChangePassword extends React.Component {
         })
         .catch(this.props.errorHandler(response => {
             this.setState({ hasError: true, errorMessage: response.message, success: false })
-        }));
+        }))
+        .finally(_ => this.setState({ waitingResponse: false }))
     }
 
     render () {
-        const { oldPassword, newPassword, confirmPassword, hasError, errorMessage, success } = this.state;
+        const { oldPassword, newPassword, confirmPassword, hasError, errorMessage, success, waitingResponse } = this.state;
 
         return (
             <form 
@@ -93,7 +97,13 @@ class ChangePassword extends React.Component {
                 { success &&
                 'Cambio realizado con exito' }
 
-                <button type='submit' id='config-button-confirm'> Confirmar </button>
+                <RequestButton 
+                type='submit' 
+                id='config-button-confirm'
+                waiting={ waitingResponse }
+                >
+                <span>Confirmar</span>
+                </RequestButton>
             </form>
         );
     }

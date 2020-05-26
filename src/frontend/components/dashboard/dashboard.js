@@ -14,7 +14,9 @@ import './styles.scss';
 class DashboardScreen extends React.Component {
     notificationCounter = 0;
     state = {
-        notifications: []
+        notifications: [],
+        waitingAdd: false,
+        waitingDelete: []
     }
 
     constructor(props) {
@@ -24,15 +26,20 @@ class DashboardScreen extends React.Component {
     }
 
     handleProductDelete = (productId) => {
+        this.setState(state => ({ waitingDelete: [ ...state.waitingDelete, productId ] }));
+
         this.props.httpRequest(`/api/users/${this.props.user.id}/products/${productId}`, 'DELETE')
             .then(response => {
                 if (response)
                     this.onProductsChange(this.props.products.filter(product => product.id !== productId));
             })
-            .catch(_ => { });
+            .catch(this.setState(state => ({ notifications: [...state.notifications, { id: this.notificationCounter++, message: response.message, type: 'ERROR' }] }))
+            )
+            .finally(_ => this.setState(state => ({ waitingDelete: state.waitingDelete.filter(id => id != productId) })));
     }
 
     handleAddProductSubmit = (productUrl) => {
+        this.setState({ waitingAdd: true });
         this.props.httpRequest(`/api/users/${this.props.user.id}/products`, 'POST', { url: productUrl })
             .then(response => {
                 let repeated = false;
@@ -51,8 +58,9 @@ class DashboardScreen extends React.Component {
                 this.onProductsChange(newProductsArray);
             })
             .catch(this.props.errorHandler(response => {
-                this.setState(state => ({ notifications: [...state.notifications, { id: this.notificationCounter++, message: response.message, type: 'ERROR' }] }))
-            }));
+                this.setState(state => ({ notifications: [...state.notifications, { id: this.notificationCounter++, message: response.message, type: 'ERROR' }] }));
+            }))
+            .finally(_ => this.setState({ waitingAdd: false }));
     }
 
     handleDismissNotification = (notificationId) => {
@@ -61,7 +69,7 @@ class DashboardScreen extends React.Component {
 
     render() {
         const { user, onLogOut, products } = this.props;
-        const { notifications } = this.state;
+        const { notifications, waitingAdd } = this.state;
 
         return (
             <div>
@@ -77,6 +85,7 @@ class DashboardScreen extends React.Component {
 
                 <AddProduct
                     onSubmit={this.handleAddProductSubmit}
+                    waiting={waitingAdd}
                 />
 
                 <div id='dashboard-product-container'>
@@ -91,6 +100,7 @@ class DashboardScreen extends React.Component {
                             prevPrice={product.prevPrice && product.prevPrice.amount}
                             prevCurrency={product.prevPrice && product.prevPrice.currency}
                             onDelete={() => { this.handleProductDelete(product.id) }}
+                            waiting={ this.state.waitingDelete.includes(product.id) }
                         />))}
                 </div>
 

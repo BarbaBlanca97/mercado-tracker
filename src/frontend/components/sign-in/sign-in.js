@@ -2,6 +2,7 @@ import React from 'react';
 import withHttpRequest from '../../HOCs/withHttpRequest';
 
 import ErrorDisplay from '../error-display';
+import RequestButton from '../request-button';
 
 import './styles.scss'
 
@@ -22,7 +23,8 @@ class SingIn extends React.Component {
                 passwordB: ''
             },
             registeredSuccessufly: false,
-            hasError: false
+            hasError: false,
+            waitingResponse: false
         }
     }
 
@@ -49,6 +51,8 @@ class SingIn extends React.Component {
     handleFormSubmit = (event) => {
         event.preventDefault();
 
+        this.setState({ waitingResponse: true });
+
         if (this.state.credentials.passwordA === this.state.credentials.passwordB) {
             this.props.httpRequest('/api/users', 'POST',
                 {
@@ -60,16 +64,17 @@ class SingIn extends React.Component {
                     this.user = response;
                     this.setState({ registeredSuccessufly: true, hasError: false });
                 })
-                .catch(error => {
+                .catch(this.props.errorHandler(error => {
                     this.setState({ hasError: true, error })
-                });
+                }))
+                .finally(_ => this.setState({ waitingResponse: false }));
         }
 
     }
 
     render() {
         const { username, mail, passwordA, passwordB } = this.state.credentials;
-        const { hasError, error } = this.state;
+        const { hasError, error, waitingResponse } = this.state;
 
         if (this.state.registeredSuccessufly)
             return (
@@ -124,7 +129,9 @@ class SingIn extends React.Component {
 
                         {hasError && <ErrorDisplay>{error.message} </ErrorDisplay>}
 
-                        <button type='submit' className="primary"> Crear cuenta </button>
+                        <RequestButton type='submit' waiting={ waitingResponse } className="primary">
+                        <span>Crear cuenta</span>
+                        </RequestButton>
                     </form>
 
                 </div>

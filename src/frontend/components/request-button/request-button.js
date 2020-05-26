@@ -1,7 +1,7 @@
 import React from 'react';
 import { FaSyncAlt } from 'react-icons/fa';
 
-import './styles.css';
+import './styles.scss';
 
 function RequestButton({ waiting, children, ...otherProps }) {
 

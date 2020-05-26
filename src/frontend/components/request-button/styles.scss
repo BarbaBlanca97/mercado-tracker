@@ -1,8 +1,11 @@
-.request-button__waiting * {
-    visibility: hidden;
-
+.request-button__waiting {
     position: relative;
+    pointer-events: none;
 }
+
+.request-button__waiting :not(.request-button__waiting--icon) {
+    visibility: hidden;
+} 
 
 @keyframes spin {
     from {
@@ -17,11 +20,12 @@
     visibility: visible;
     
     position: absolute;
-    transform: translate(50%, 50%);
-    top: 50%;
-    left: 50%;
-    
+
     animation-name: spin;
     animation-duration: 500ms;
     animation-iteration-count: infinite;
+}
+
+.request-button__waiting--icon * {
+    visibility: visible !important;
 }

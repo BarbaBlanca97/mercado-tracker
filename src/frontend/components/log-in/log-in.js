@@ -3,6 +3,7 @@ import { Redirect, Link } from 'react-router-dom';
 import withHttpRequest from '../../HOCs/withHttpRequest';
 
 import ErrorDisplay from '../error-display';
+import RequestButton from '../request-button';
 
 import './styles.scss'
 
@@ -16,7 +17,8 @@ class LogIn extends React.Component {
                 password: ''
             },
             logedIn: false,
-            hasError: false
+            hasError: false,
+            waitingResponse: false
         }
     }
 
@@ -41,6 +43,7 @@ class LogIn extends React.Component {
     handleFormSubmit = (event) => {
         event.preventDefault();
 
+        this.setState({ waitingResponse: true });
         this.props.httpRequest('/api/login', 'POST', this.state.credentials)
             .then(response => {
                 if (response.id) {
@@ -48,14 +51,15 @@ class LogIn extends React.Component {
                     this.props.onLogin(response);
                 }
             })
-            .catch(error => {
+            .catch(this.props.errorHandler(error => {
                 this.setState({ hasError: true, error });
-            });
+            }))
+            .finally(_ => this.setState({ waitingResponse: false }));
     }
 
     render() {
         const { username, password } = this.state.credentials;
-        const { hasError, error } = this.state;
+        const { hasError, error, waitingResponse } = this.state;
 
         if (this.props.logedIn)
             return <Redirect to='/dashboard' />
@@ -89,7 +93,7 @@ class LogIn extends React.Component {
 
                         {hasError && <ErrorDisplay>{error.message}</ErrorDisplay>}
 
-                        <button type='submit' className="primary"> Entrar </button>
+                        <RequestButton type='submit' waiting={ waitingResponse } className="primary"> Entrar </RequestButton>
                     </form>
 
                     <Link to='/reset/solicite'><button id='login-forgot-password'> Olvide mi contraseña </button></Link>

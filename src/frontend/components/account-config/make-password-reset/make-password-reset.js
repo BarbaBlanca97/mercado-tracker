@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import withHttpRequest from '../../../HOCs/withHttpRequest';
 import ErrorDisplay from '../../error-display';
+import RequestButton from '../../request-button';
 
 import './styles.scss';
 
@@ -14,7 +15,8 @@ class MakePasswordReset extends React.Component {
         passworConfirm: '',
         success: false,
         hasError: false,
-        error: ''
+        error: '',
+        waitingResponse: false
     }
 
     handleInputChange = (event) => {
@@ -33,6 +35,8 @@ class MakePasswordReset extends React.Component {
         event.preventDefault();
 
         if (this.state.passworConfirm === this.state.newPassword) {
+            this.setState({ waitingResponse: true });
+
             this.props.httpRequest('/api/reset/make', 'POST', {
                 code: this.state.code,
                 newPassword: this.state.newPassword
@@ -41,9 +45,10 @@ class MakePasswordReset extends React.Component {
                     if (response)
                         this.setState({ hasError: false, success: true });
                 })
-                .catch(error => {
+                .catch(this.props.errorHandler(error => {
                     this.setState({ hasError: true, success: false, error: error.message });
-                });
+                }))
+                .finally(_ => this.setState({ waitingResponse: false }));
         }
         else {
             console.log('las contraseñas no coinciden');
@@ -51,7 +56,7 @@ class MakePasswordReset extends React.Component {
     }
 
     renderContent = () => {
-        const { code, newPassword, passworConfirm, success, hasError, error } = this.state;
+        const { code, newPassword, passworConfirm, success, hasError, error, waitingResponse } = this.state;
 
         if (success)
             return <>
@@ -95,7 +100,9 @@ class MakePasswordReset extends React.Component {
                     {hasError &&
                         <ErrorDisplay>{error}</ErrorDisplay>}
 
-                    <button type='submit'> Enviar </button>
+                    <RequestButton type='submit' waiting={ waitingResponse }> 
+                    <span>Enviar</span> 
+                    </RequestButton>
                 </form>
             </>;
     }

@@ -1,11 +1,12 @@
 import React from 'react';
+import RequestButton from '../../request-button';
 
 import './styles.scss';
 
 class Product extends React.Component {
 
     render () {
-        const { name, imgUrl, url, price, currency, prevPrice, prevCurrency, onDelete } = this.props;
+        const { name, imgUrl, url, price, currency, prevPrice, prevCurrency, onDelete, waiting } = this.props;
         let variation = 0;
         let currencyChange = false;
 
@@ -42,7 +43,11 @@ class Product extends React.Component {
             </div>
 
             <div className='dashboard-product-controls'>
-                <button onClick={ (e) => { e.stopPropagation(); e.preventDefault(); onDelete(); } }> Dejar de seguir </button>
+                <RequestButton
+                waiting={ waiting }
+                onClick={ (e) => { e.stopPropagation(); e.preventDefault(); onDelete(); } }> 
+                <span>Dejar de seguir</span>
+                </RequestButton>
             </div>
         </a>
         );

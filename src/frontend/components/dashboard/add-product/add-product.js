@@ -28,6 +28,7 @@ class AddProduct extends React.Component {
                     onChange={this.handleInputChange}
                     value={productUrl}
                     placeholder='Introducir aquí la url (o id) del producto...'
+                    onKeyDown={ (event) => { if (event.key === 'Enter') onSubmit(productUrl); } } 
                 />
 
                 <RequestButton

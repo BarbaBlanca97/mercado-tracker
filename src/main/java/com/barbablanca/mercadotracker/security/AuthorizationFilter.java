@@ -58,18 +58,18 @@ public class AuthorizationFilter extends OncePerRequestFilter {
                          .setAuthentication(new UsernamePasswordAuthenticationToken(principal, token, null));
 
 
-                 Algorithm algorithm = Algorithm.HMAC256("secret");
+                 Algorithm algorithm = Algorithm.HMAC256(Objects.requireNonNull(env.getProperty("JWT_SECRET")));
 
                  Date expiresAt = new Date();
                  expiresAt.setTime(expiresAt.getTime() + 900000);
 
-                 String refreshToken = JWT.create()
+                 String refreshedToken = JWT.create()
                          .withExpiresAt(expiresAt)
                          .withClaim("userId", principal.getId())
                          .withClaim("username", principal.getName())
                          .sign(algorithm);
 
-                 response.addHeader("authorization", refreshToken);
+                 response.addHeader("authorization", refreshedToken);
              }
              catch (Exception e) {
                  log.error("An error ocurred trying to authorize a request " +  e.getMessage());

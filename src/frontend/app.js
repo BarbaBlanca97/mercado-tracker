@@ -17,8 +17,6 @@ import AccountDeleted from './components/account-config/account-deleted';
 import SolicitePasswordReset from './components/account-config/solicite-pasword-reset';
 import MakePasswordReset from './components/account-config/make-password-reset';
 
-import httpRequest from './httpRequest';
-
 import './styles.scss';
 
 const ApplicationContext = React.createContext();
@@ -38,9 +36,23 @@ class App extends React.Component {
     }
 
     componentDidMount() {
-        httpRequest('/api/authenticate-token', 'POST')
-            .then(response => {
-                this.setState({ logedIn: true, awaitingServer: false, user: response, products: response.products });
+        let accesToken = localStorage.getItem('authorization');
+
+        fetch('/api/authenticate-token', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': accesToken
+            }
+        })
+            .then(async (response) => {
+                const responseData = await response.json();
+
+                if (response.ok)
+                    this.setState({ logedIn: true, awaitingServer: false, user: responseData, products: responseData.products });
+                else
+                    this.setState({ awaitingServer: false });
             })
             .catch(_ => {
                 this.setState({ awaitingServer: false });

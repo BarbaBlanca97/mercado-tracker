@@ -7,7 +7,6 @@ import com.barbablanca.mercadotracker.mailing.MailSender;
 import com.barbablanca.mercadotracker.users.UserEntity;
 import com.barbablanca.mercadotracker.users.UserRepository;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.http.impl.auth.DigestScheme;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;

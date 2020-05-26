@@ -1,10 +1,10 @@
 import React from 'react';
-import httpRequest from '../../../httpRequest';
+import withHttpRequest from '../../../HOCs/withHttpRequest';
 
 import './styles.scss';
 import { Link } from 'react-router-dom';
 
-export default class SolicitePasswordReset extends React.Component {
+class SolicitePasswordReset extends React.Component {
 
     state = {
         email: ''
@@ -15,11 +15,11 @@ export default class SolicitePasswordReset extends React.Component {
     }
 
     handleSendRequest = () => {
-        httpRequest('/api/reset/solicite', 'POST', this.state)
-        .catch(_ => {});
+        this.props.httpRequest('/api/reset/solicite', 'POST', this.state)
+            .catch(_ => { });
     }
 
-    render () {
+    render() {
         const { email } = this.state;
 
         return (
@@ -29,15 +29,15 @@ export default class SolicitePasswordReset extends React.Component {
                     <li>Por discreción, si la operación falla (el mail no se envia o no esta registrado en la base de datos)<strong> no se le informará</strong> en esta pantalla, deberá reintentar la operacion más tarde </li>
                     <li>Si reintentó la operacion multiples veces, solo el código del primer correo recibido será valido</li>
                 </ul>
-                <input 
+                <input
                     placeholder='Correo electrónico'
                     type='email'
-                    value={ email }
-                    onChange={ this.handleInputChange }
+                    value={email}
+                    onChange={this.handleInputChange}
                 />
 
-                <div> 
-                    <button className='primary' onClick={ this.handleSendRequest }> Enviar </button>
+                <div>
+                    <button className='primary' onClick={this.handleSendRequest}> Enviar </button>
                     <Link to='/reset/make'>
                         <button> Ya recibí el correo </button>
                     </Link>
@@ -46,3 +46,5 @@ export default class SolicitePasswordReset extends React.Component {
         );
     }
 }
+
+export default withHttpRequest(SolicitePasswordReset);

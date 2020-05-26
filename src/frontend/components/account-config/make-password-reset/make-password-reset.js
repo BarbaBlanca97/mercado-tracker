@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import httpRequest from '../../../httpRequest';
+import withHttpRequest from '../../../HOCs/withHttpRequest';
 import ErrorDisplay from '../../error-display';
 
 import './styles.scss';
 
-export default class MakePasswordReset extends React.Component {
+class MakePasswordReset extends React.Component {
 
     state = {
         code: undefined,
@@ -33,17 +33,17 @@ export default class MakePasswordReset extends React.Component {
         event.preventDefault();
 
         if (this.state.passworConfirm === this.state.newPassword) {
-            httpRequest('/api/reset/make', 'POST', {
+            this.props.httpRequest('/api/reset/make', 'POST', {
                 code: this.state.code,
                 newPassword: this.state.newPassword
             })
-            .then(response => {
-                if (response)
-                    this.setState({ hasError: false, success: true });
-            })
-            .catch(error => {
-                this.setState({ hasError: true, success: false, error: error.message });
-            });
+                .then(response => {
+                    if (response)
+                        this.setState({ hasError: false, success: true });
+                })
+                .catch(error => {
+                    this.setState({ hasError: true, success: false, error: error.message });
+                });
         }
         else {
             console.log('las contraseñas no coinciden');
@@ -65,46 +65,48 @@ export default class MakePasswordReset extends React.Component {
             return <>
                 <h3> Ingrese el código recibido en su correo para efectuar el cambio de contraseña </h3>
 
-                <form onSubmit={ this.handleFormSubmit } id='make-password-reset-form'>
+                <form onSubmit={this.handleFormSubmit} id='make-password-reset-form'>
                     <label htmlFor='make-password-reset-input-code'> Codigo </label>
-                    <input 
-                        id='make-password-reset-input-code' 
-                        type='number' 
+                    <input
+                        id='make-password-reset-input-code'
+                        type='number'
                         placeholder='Ingrese el codigo'
-                        onChange={ this.handleInputChange }
-                        value={ code }
+                        onChange={this.handleInputChange}
+                        value={code}
                     />
 
                     <label htmlFor='make-password-reset-input-pasword'> Contraseña </label>
-                    <input 
-                        id='make-password-reset-input-password' 
-                        type='password' 
+                    <input
+                        id='make-password-reset-input-password'
+                        type='password'
                         placeholder='Ingrese la nueva contraseña'
-                        onChange={ this.handleInputChange }
-                        value={ newPassword }
+                        onChange={this.handleInputChange}
+                        value={newPassword}
                     />
 
-                    <input 
-                        id='make-password-reset-input-password-confirm' 
-                        type='password'  
+                    <input
+                        id='make-password-reset-input-password-confirm'
+                        type='password'
                         placeholder='Confirme la nueva contraseña'
-                        onChange={ this.handleInputChange }
-                        value={ passworConfirm }
+                        onChange={this.handleInputChange}
+                        value={passworConfirm}
                     />
 
-                    { hasError && 
-                    <ErrorDisplay>{ error }</ErrorDisplay> }
+                    {hasError &&
+                        <ErrorDisplay>{error}</ErrorDisplay>}
 
                     <button type='submit'> Enviar </button>
                 </form>
             </>;
     }
 
-    render () {
+    render() {
         return (
             <div id='make-password-reset'>
-                { this.renderContent() }
+                {this.renderContent()}
             </div>
         );
     }
 }
+
+export default withHttpRequest(MakePasswordReset);

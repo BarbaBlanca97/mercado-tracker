@@ -14,20 +14,20 @@ const WellcomeScreen = function ({ logedIn, onLogin }) {
             <p> Elegí un producto de mercadolibre y te avisamos cuando cambie el precio </p>
 
             <div id="wellcome-actions">
-                <Link to={ `/signin` }><button> Sign in </button></Link>
-                <Link to={ `/login` }><button> Log in </button></Link>
+                <Link to={`/signin`}><button> Registrarse </button></Link>
+                <Link to={`/login`}><button> Iniciar sesión </button></Link>
             </div>
 
             <Switch>
                 <Route
                     path='/login'
-                    render={ (match) => (    <LogIn 
-                                            onLogin={ onLogin }
-                                            logedIn={ logedIn }
-                                            match={ match }
-                                        /> ) }
+                    render={(match) => (<LogIn
+                        onLogin={onLogin}
+                        logedIn={logedIn}
+                        match={match}
+                    />)}
                 />
-                <Route path='/signin' component={ SignIn } />
+                <Route path='/signin' component={SignIn} />
             </Switch>
         </div>
     );

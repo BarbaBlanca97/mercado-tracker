@@ -35,10 +35,17 @@ export default function (Component) {
             }
 
             const request = new Request(url, requestInfo);
+
             console.log('sending request: ', request);
-            const response = await fetch(request);
-            console.log('response recived: ')
-            const responseData = await response.json();
+            console.log('response recived: ');
+
+            let response;
+            let responseData;
+            try {
+                response = await fetch(request);
+                responseData = await response.json();
+            }
+            catch (_) { responseData = { code: 400, message: 'Ha ocurrido un error' }; }
 
             accesToken = response.headers.get('Authorization');
             if (accesToken)
@@ -49,7 +56,6 @@ export default function (Component) {
                 return responseData;
             }
             else {
-
                 if (url != '/api/login' && (response.status === 403 || response.status === 401)) {
                     this.onUnAuthorized(true);
                     throw -1;

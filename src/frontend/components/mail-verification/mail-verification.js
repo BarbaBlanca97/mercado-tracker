@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import httpRequest from '../../httpRequest';
+import withHttpRequest from '../../HOCs/withHttpRequest';
 
 class MailVerification extends React.Component {
 
@@ -10,19 +10,19 @@ class MailVerification extends React.Component {
     }
 
     componentDidMount() {
-        httpRequest('/api/verify', "POST", {
+        this.props.httpRequest('/api/verify', "POST", {
             token: this.props.match.params.token
         })
-        .then(response => {
-            this.setState({
-                verified: response,
-                awaitingServer: false
-            });
-        })
-        .catch(_ => {});
+            .then(response => {
+                this.setState({
+                    verified: response,
+                    awaitingServer: false
+                });
+            })
+            .catch(_ => { });
     }
 
-    render () {
+    render() {
         const { verified, awaitingServer } = this.state;
 
         if (awaitingServer)
@@ -44,4 +44,4 @@ class MailVerification extends React.Component {
     }
 }
 
-export default MailVerification;
+export default withHttpRequest(MailVerification);

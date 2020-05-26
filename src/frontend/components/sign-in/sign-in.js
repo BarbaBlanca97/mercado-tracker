@@ -1,5 +1,5 @@
-import      React         from 'react';
-import      httpRequest   from '../../httpRequest';
+import React from 'react';
+import withHttpRequest from '../../HOCs/withHttpRequest';
 
 import ErrorDisplay from '../error-display';
 
@@ -31,18 +31,18 @@ class SingIn extends React.Component {
         let value = event.target.value;
 
         switch (event.target.id) {
-            case 'singin-input-user':         field = 'username'; break;
-            case 'singin-input-mail':         field = 'mail'; break;
-            case 'singin-input-passwordA':    field = 'passwordA'; break;
-            case 'singin-input-passwordB':    field = 'passwordB'; break;
+            case 'singin-input-user': field = 'username'; break;
+            case 'singin-input-mail': field = 'mail'; break;
+            case 'singin-input-passwordA': field = 'passwordA'; break;
+            case 'singin-input-passwordB': field = 'passwordB'; break;
             default: break;
         }
 
-        this.setState(state => ({  
+        this.setState(state => ({
             credentials: {
                 ...state.credentials,
-                [field]: value 
-            } 
+                [field]: value
+            }
         }));
     }
 
@@ -50,86 +50,86 @@ class SingIn extends React.Component {
         event.preventDefault();
 
         if (this.state.credentials.passwordA === this.state.credentials.passwordB) {
-            httpRequest('/api/users', 'POST', 
-            {
-                username: this.state.credentials.username,
-                email: this.state.credentials.mail,
-                password: this.state.credentials.passwordA
-            })
-            .then(response => {
-                this.user = response;
-                this.setState({ registeredSuccessufly: true, hasError: false });
-            })
-            .catch(error => {
-                this.setState({ hasError: true, error })
-            });
+            this.props.httpRequest('/api/users', 'POST',
+                {
+                    username: this.state.credentials.username,
+                    email: this.state.credentials.mail,
+                    password: this.state.credentials.passwordA
+                })
+                .then(response => {
+                    this.user = response;
+                    this.setState({ registeredSuccessufly: true, hasError: false });
+                })
+                .catch(error => {
+                    this.setState({ hasError: true, error })
+                });
         }
 
     }
 
-    render () {
+    render() {
         const { username, mail, passwordA, passwordB } = this.state.credentials;
         const { hasError, error } = this.state;
 
-        if ( this.state.registeredSuccessufly )
+        if (this.state.registeredSuccessufly)
             return (
-            <div id='singin-success'>
-                <p>
-                    <span className='text-bold'>Listo! Ya tenés tu cuenta</span>, para habilitar las notificaciones por correo hace click en el link que te enviamos a <span className='text-bold'>{ this.user.email }</span>   
-                </p>
-                <p>
-                Podes loguearte y empezar a usar la aplicacion haciendo click el botón <span className='text-bold'>Log in</span> que hay acá arriba.
-                </p>
-                <p>
-                    Si no encontrás los correos <span className='text-bold'>revisá tu carpeta de spam</span>
-                </p>
-            </div>);
+                <div id='singin-success'>
+                    <p>
+                        <span className='text-bold'>Listo! Ya tenés tu cuenta</span>, para habilitar las notificaciones por correo hace click en el link que te enviamos a <span className='text-bold'>{this.user.email}</span>
+                    </p>
+                    <p>
+                        Podes loguearte y empezar a usar la aplicacion haciendo click el botón <span className='text-bold'>Iniciar sesión</span> que hay acá arriba.
+                    </p>
+                    <p>
+                        Si no encontrás los correos <span className='text-bold'>revisá tu carpeta de spam</span>
+                    </p>
+                </div>);
         else
             return (
-            <div id='singin-container'>
-                <h2> Sign In </h2>
-    
-                <form id='singin-form' onSubmit={ this.handleFormSubmit }>
-                    <label htmlFor='singin-input-user'> Ingrese un nombre de usuario </label>
-                    <input 
-                        id='singin-input-user' 
-                        type='text' 
-                        value={ username } 
-                        onChange={ this.handleInputChange }
-                    />
+                <div id='singin-container'>
+                    <h2> Crear una cuenta </h2>
 
-                    <label htmlFor='singin-input-mail'> Ingrese su dirección de correo electrónico </label>
-                    <input 
-                        id='singin-input-mail' 
-                        type='email' 
-                        value={ mail } 
-                        onChange={ this.handleInputChange }
-                    />
-    
-                    <label htmlFor='singin-input-passwordA'> Ingrese su contraseña </label>
-                    <input 
-                        id='singin-input-passwordA' 
-                        type='password' 
-                        value={ passwordA } 
-                        onChange={ this.handleInputChange }
-                    />
+                    <form id='singin-form' onSubmit={this.handleFormSubmit}>
+                        <label htmlFor='singin-input-user'> Ingrese un nombre de usuario </label>
+                        <input
+                            id='singin-input-user'
+                            type='text'
+                            value={username}
+                            onChange={this.handleInputChange}
+                        />
 
-                    <label htmlFor='singin-input-passwordB'> Repita su contraseña </label>
-                    <input 
-                        id='singin-input-passwordB' 
-                        type='password' 
-                        value={ passwordB } 
-                        onChange={ this.handleInputChange }
-                    />
+                        <label htmlFor='singin-input-mail'> Ingrese su dirección de correo electrónico </label>
+                        <input
+                            id='singin-input-mail'
+                            type='email'
+                            value={mail}
+                            onChange={this.handleInputChange}
+                        />
 
-                    { hasError && <ErrorDisplay>{ error.message } </ErrorDisplay> }
-                    
-                    <button type='submit' className="primary"> Crear cuenta </button>
-                </form>
-    
-            </div>
+                        <label htmlFor='singin-input-passwordA'> Ingrese su contraseña </label>
+                        <input
+                            id='singin-input-passwordA'
+                            type='password'
+                            value={passwordA}
+                            onChange={this.handleInputChange}
+                        />
+
+                        <label htmlFor='singin-input-passwordB'> Repita su contraseña </label>
+                        <input
+                            id='singin-input-passwordB'
+                            type='password'
+                            value={passwordB}
+                            onChange={this.handleInputChange}
+                        />
+
+                        {hasError && <ErrorDisplay>{error.message} </ErrorDisplay>}
+
+                        <button type='submit' className="primary"> Crear cuenta </button>
+                    </form>
+
+                </div>
             );
-    } 
+    }
 }
 
-export default SingIn;
+export default withHttpRequest(SingIn);

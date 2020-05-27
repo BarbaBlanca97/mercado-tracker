@@ -112,3 +112,28 @@ hr {
 
     border-top: none;
 }
+
+#connecting-container {
+    width: 100%;
+    margin: 50px auto;
+
+    text-align: center;
+    font-size: 25px;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+#connecting-spinner {
+    margin: auto;
+    animation-name: spin;
+    animation-duration: 700ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}

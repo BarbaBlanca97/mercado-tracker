@@ -17,6 +17,8 @@ import AccountDeleted from './components/account-config/account-deleted';
 import SolicitePasswordReset from './components/account-config/solicite-pasword-reset';
 import MakePasswordReset from './components/account-config/make-password-reset';
 
+import { FaSpinner } from 'react-icons/fa';
+
 import './styles.scss';
 
 const ApplicationContext = React.createContext();
@@ -79,7 +81,9 @@ class App extends React.Component {
 
 
         if (awaitingServer)
-            return <div> Aguarde un momento </div>;
+            return <div id='connecting-container'>
+                <FaSpinner id='connecting-spinner' />
+            </div>;
 
         return (
             <ApplicationContext.Provider value={{ onUnAuthorized: this.state.onUnAuthorized }}>

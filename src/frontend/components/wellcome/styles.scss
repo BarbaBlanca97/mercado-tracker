@@ -5,6 +5,14 @@
     align-items: center;
 
     margin: 2em;
+
+    p {
+        text-align: center;
+    }
+
+    img {
+        margin: 15px 0;
+    }
 }
 
 #wellcome-header {
@@ -15,4 +23,8 @@
 #wellcome-actions {
     display: flex;
     flex-direction: row;
+}
+
+#wellcome-image {
+    height: 150px;
 }

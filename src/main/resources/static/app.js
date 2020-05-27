@@ -327,8 +327,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_account_config_account_deleted__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/account-config/account-deleted */ "./frontend/components/account-config/account-deleted/index.js");
 /* harmony import */ var _components_account_config_solicite_pasword_reset__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/account-config/solicite-pasword-reset */ "./frontend/components/account-config/solicite-pasword-reset/index.js");
 /* harmony import */ var _components_account_config_make_password_reset__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/account-config/make-password-reset */ "./frontend/components/account-config/make-password-reset/index.js");
-/* harmony import */ var _styles_scss__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./styles.scss */ "./frontend/styles.scss");
-/* harmony import */ var _styles_scss__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(_styles_scss__WEBPACK_IMPORTED_MODULE_12__);
+/* harmony import */ var react_icons_fa__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! react-icons/fa */ "./node_modules/react-icons/fa/index.esm.js");
+/* harmony import */ var _styles_scss__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./styles.scss */ "./frontend/styles.scss");
+/* harmony import */ var _styles_scss__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(_styles_scss__WEBPACK_IMPORTED_MODULE_13__);
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -352,6 +353,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -492,7 +494,11 @@ function (_React$Component) {
           products = _this$state.products;
       var handleLogin = this.handleLogin;
       var handleLogOut = this.handleLogOut;
-      if (awaitingServer) return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, " Aguarde un momento ");
+      if (awaitingServer) return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        id: "connecting-container"
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_icons_fa__WEBPACK_IMPORTED_MODULE_12__["FaSpinner"], {
+        id: "connecting-spinner"
+      }));
       return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(ApplicationContext.Provider, {
         value: {
           onUnAuthorized: this.state.onUnAuthorized
@@ -3236,7 +3242,11 @@ var WellcomeScreen = function WellcomeScreen(_ref) {
     id: "wellcome-container"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", {
     id: "wellcome-header"
-  }, " Mercado Tracker "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, " Eleg\xED un producto de mercadolibre y te avisamos cuando cambie el precio "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }, " Mercado Tracker "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+    id: "wellcome-image",
+    src: "start-image.png",
+    alt: "Imagen de presentacion"
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, " Eleg\xED un producto de mercadolibre y te avisamos cuando cambie el precio ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "\xA1As\xED de simple!"), " "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     id: "wellcome-actions"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
     to: "/signin"
@@ -14248,7 +14258,7 @@ exports.push([module.i, "#singin-container {\n  display: flex;\n  flex-direction
 
 exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js")(false);
 // Module
-exports.push([module.i, "#wellcome-container {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  margin: 2em; }\n\n#wellcome-header {\n  font-family: 'Roboto Condensed', sans-serif;\n  margin-bottom: 0; }\n\n#wellcome-actions {\n  display: flex;\n  flex-direction: row; }\n", ""]);
+exports.push([module.i, "#wellcome-container {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  margin: 2em; }\n  #wellcome-container p {\n    text-align: center; }\n  #wellcome-container img {\n    margin: 15px 0; }\n\n#wellcome-header {\n  font-family: 'Roboto Condensed', sans-serif;\n  margin-bottom: 0; }\n\n#wellcome-actions {\n  display: flex;\n  flex-direction: row; }\n\n#wellcome-image {\n  height: 150px; }\n", ""]);
 
 
 /***/ }),
@@ -14265,7 +14275,7 @@ exports = module.exports = __webpack_require__(/*! ../node_modules/css-loader/di
 exports.push([module.i, "@import url(https://fonts.googleapis.com/css?family=Roboto&display=swap);", ""]);
 exports.push([module.i, "@import url(https://fonts.googleapis.com/css?family=Roboto+Condensed:700&display=swap);", ""]);
 // Module
-exports.push([module.i, "body {\n  font-family: \"Roboto\", sans-serif;\n  color: #4f5359;\n  background-color: #f5f5f5;\n  margin: 0;\n  width: 100%; }\n\n#app-root {\n  width: 100%;\n  max-width: 100%; }\n\n#popup-overlay {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  pointer-events: none; }\n\nbutton {\n  font-family: \"Roboto\", sans-serif;\n  font-weight: 700;\n  padding: .8em 1em;\n  background-color: #4f5359;\n  color: white;\n  border-style: solid;\n  border-width: 1px;\n  border-color: #4f5359;\n  border-radius: 5px;\n  margin: .2em;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  cursor: pointer; }\n\nbutton:hover {\n  background-color: #00bf8f;\n  border-color: #00bf8f; }\n\nbutton.primary {\n  background-color: #00bf8f;\n  border-color: #00bf8f; }\n\nbutton.warn {\n  background-color: #ba4e47;\n  border-color: #ba4e47; }\n\nbutton.icon {\n  border-radius: 50%;\n  padding: .5em;\n  font-size: 1.3em; }\n\nbutton.primary:hover {\n  background-color: #ebfff7;\n  border-color: #00bf8f;\n  color: #00bf8f; }\n\nbutton.warn:hover {\n  background-color: #ffefef;\n  color: #ba4e47; }\n\ninput {\n  border-radius: 5px;\n  border-color: #cfcfcf;\n  border-style: solid;\n  border-width: 1px;\n  font-family: inherit;\n  padding: .8em 1em;\n  margin-bottom: 1em; }\n\n.text-bold {\n  font-weight: bold; }\n\n.ml {\n  margin-left: .5em; }\n\n.mr {\n  margin-right: .5em; }\n\na {\n  text-decoration: none;\n  color: inherit; }\n\nhr {\n  margin: 1em .5em;\n  width: 100%;\n  border-color: #cfcfcf;\n  border-width: 1px;\n  border-top: none; }\n", ""]);
+exports.push([module.i, "body {\n  font-family: \"Roboto\", sans-serif;\n  color: #4f5359;\n  background-color: #f5f5f5;\n  margin: 0;\n  width: 100%; }\n\n#app-root {\n  width: 100%;\n  max-width: 100%; }\n\n#popup-overlay {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  pointer-events: none; }\n\nbutton {\n  font-family: \"Roboto\", sans-serif;\n  font-weight: 700;\n  padding: .8em 1em;\n  background-color: #4f5359;\n  color: white;\n  border-style: solid;\n  border-width: 1px;\n  border-color: #4f5359;\n  border-radius: 5px;\n  margin: .2em;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  cursor: pointer; }\n\nbutton:hover {\n  background-color: #00bf8f;\n  border-color: #00bf8f; }\n\nbutton.primary {\n  background-color: #00bf8f;\n  border-color: #00bf8f; }\n\nbutton.warn {\n  background-color: #ba4e47;\n  border-color: #ba4e47; }\n\nbutton.icon {\n  border-radius: 50%;\n  padding: .5em;\n  font-size: 1.3em; }\n\nbutton.primary:hover {\n  background-color: #ebfff7;\n  border-color: #00bf8f;\n  color: #00bf8f; }\n\nbutton.warn:hover {\n  background-color: #ffefef;\n  color: #ba4e47; }\n\ninput {\n  border-radius: 5px;\n  border-color: #cfcfcf;\n  border-style: solid;\n  border-width: 1px;\n  font-family: inherit;\n  padding: .8em 1em;\n  margin-bottom: 1em; }\n\n.text-bold {\n  font-weight: bold; }\n\n.ml {\n  margin-left: .5em; }\n\n.mr {\n  margin-right: .5em; }\n\na {\n  text-decoration: none;\n  color: inherit; }\n\nhr {\n  margin: 1em .5em;\n  width: 100%;\n  border-color: #cfcfcf;\n  border-width: 1px;\n  border-top: none; }\n\n#connecting-container {\n  width: 100%;\n  margin: 50px auto;\n  text-align: center;\n  font-size: 25px; }\n\n@keyframes spin {\n  from {\n    transform: rotate(0deg); }\n  to {\n    transform: rotate(360deg); } }\n\n#connecting-spinner {\n  margin: auto;\n  animation-name: spin;\n  animation-duration: 700ms;\n  animation-iteration-count: infinite;\n  animation-timing-function: linear; }\n", ""]);
 
 
 /***/ }),
@@ -45508,9 +45518,9 @@ function valueEqual(a, b) {
 /***/ }),
 
 /***/ "./node_modules/webpack/buildin/global.js":
-/*!************************************************!*\
-  !*** ./node_modules/webpack/buildin/global.js ***!
-  \************************************************/
+/*!***********************************!*\
+  !*** (webpack)/buildin/global.js ***!
+  \***********************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 

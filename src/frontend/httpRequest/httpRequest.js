@@ -16,9 +16,7 @@ const httpRequest = async function (url, method, data) {
     }
     
     const request = new Request(url, requestInfo);
-    console.log('sending request: ', request);
     const response = await fetch(request);
-    console.log('response recived: ')
     const responseData = await response.json();
 
     accesToken = response.headers.get('Authorization');
@@ -26,7 +24,6 @@ const httpRequest = async function (url, method, data) {
         localStorage.setItem('authorization', accesToken);
     
     if (response.ok) {
-        console.log(responseData);
         return responseData;
     }
     else {

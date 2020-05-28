@@ -36,9 +36,6 @@ export default function (Component) {
 
             const request = new Request(url, requestInfo);
 
-            console.log('sending request: ', request);
-            console.log('response recived: ');
-
             let response;
             let responseData;
             try {
@@ -52,7 +49,6 @@ export default function (Component) {
                 localStorage.setItem('authorization', accesToken);
 
             if (response.ok) {
-                console.log(responseData);
                 return responseData;
             }
             else {

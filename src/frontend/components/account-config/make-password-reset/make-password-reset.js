@@ -51,7 +51,7 @@ class MakePasswordReset extends React.Component {
                 .finally(_ => this.setState({ waitingResponse: false }));
         }
         else {
-            console.log('las contraseñas no coinciden');
+            this.setState({ hasError: true, error: 'Las contraseñas no coinciden' });
         }
     }
 

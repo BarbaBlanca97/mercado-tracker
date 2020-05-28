@@ -93,7 +93,9 @@ class LogIn extends React.Component {
 
                         {hasError && <ErrorDisplay>{error.message}</ErrorDisplay>}
 
-                        <RequestButton type='submit' waiting={ waitingResponse } className="primary"> Entrar </RequestButton>
+                        <RequestButton type='submit' waiting={ waitingResponse } className="primary">
+                            <span>Entrar</span>
+                        </RequestButton>
                     </form>
 
                     <Link to='/reset/solicite'><button id='login-forgot-password'> Olvide mi contraseña </button></Link>

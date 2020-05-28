@@ -16,6 +16,7 @@ import MailVerification from './components/mail-verification';
 import AccountDeleted from './components/account-config/account-deleted';
 import SolicitePasswordReset from './components/account-config/solicite-pasword-reset';
 import MakePasswordReset from './components/account-config/make-password-reset';
+import NotFound from './components/not-found';
 
 import { FaSpinner } from 'react-icons/fa';
 
@@ -137,13 +138,18 @@ class App extends React.Component {
                         ></Route>
 
                         <Route
-                            path='/'
+                            exact
+                            path='/(|login|signin)'
                             render={() => (
                                 <WellcomeScreen
                                     logedIn={logedIn}
                                     onLogin={handleLogin}
                                 />)}
                         />
+
+                        <Route
+                            component={NotFound}
+                        ></Route>
                     </Switch>
                 </Router>
             </ApplicationContext.Provider>

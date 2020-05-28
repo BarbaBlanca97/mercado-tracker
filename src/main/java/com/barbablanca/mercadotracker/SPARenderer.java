@@ -17,7 +17,7 @@ public class SPARenderer implements WebMvcConfigurer {
         registry.addResourceHandler("/**").addResourceLocations("classpath:/static/");
     }
 
-    @RequestMapping(value = "/{path:[^\\.]*}")
+    @RequestMapping("/**/{path:[^\\.]*}")
     public String redirect() {
         return "forward:/";
     }

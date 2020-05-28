@@ -33,8 +33,9 @@ class DashboardScreen extends React.Component {
                 if (response)
                     this.onProductsChange(this.props.products.filter(product => product.id !== productId));
             })
-            .catch(this.setState(state => ({ notifications: [...state.notifications, { id: this.notificationCounter++, message: response.message, type: 'ERROR' }] }))
-            )
+            .catch(this.props.errorHandler(error => {
+                this.setState(state => ({ notifications: [...state.notifications, { id: this.notificationCounter++, message: error.message, type: 'ERROR' }] }));
+            }))
             .finally(_ => this.setState(state => ({ waitingDelete: state.waitingDelete.filter(id => id != productId) })));
     }
 

@@ -1,7 +1,12 @@
 const path = require('path');
+const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
-    mode: process.env.MODE === 'production' ? 'production' : 'development',
+    mode: 'production', // 'development'
+    optimization: {
+        minimize: true,
+        minimizer: [new TerserPlugin()],
+    },
     entry: './frontend/app.js',
     output: {
         path: path.resolve(__dirname, 'main/resources/static'),

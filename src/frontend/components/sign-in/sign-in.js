@@ -69,7 +69,9 @@ class SingIn extends React.Component {
                 }))
                 .finally(_ => this.setState({ waitingResponse: false }));
         }
-
+        else {
+            this.setState({ hasError: true, error: 'Las contraseñas no coinciden' });
+        }
     }
 
     render() {

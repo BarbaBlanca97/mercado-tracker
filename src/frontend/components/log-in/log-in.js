@@ -69,7 +69,7 @@ class LogIn extends React.Component {
                     {this.props.match.location.search.includes('expired') &&
                         <ErrorDisplay>
                             Ha pasado demasiado tiempo inactivo, vuelva a iniciar sesion
-                    </ErrorDisplay>
+                        </ErrorDisplay>
                     }
 
                     <h2> Iniciar sesión </h2>

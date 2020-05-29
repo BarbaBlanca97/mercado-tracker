@@ -18,7 +18,8 @@ public class PostUser {
     @NotBlank( message = "Debe proporcionar un nombre de usuario")
     @JsonProperty("username")
     private String username;
-    @NotNull
+    @NotNull( message = "Debe ingresar un correo")
+    @NotBlank( message = "Debe ingresar un correo")
     @Email( message = "El formato de correo electónico no es válido")
     @JsonProperty("email")
     private String email;

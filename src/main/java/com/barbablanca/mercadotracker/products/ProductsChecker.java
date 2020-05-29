@@ -91,6 +91,8 @@ public class ProductsChecker {
 
                     ProductEntity localProduct = findProductById(products, mlProduct.getId());
 
+                    if (localProduct == null) continue;
+
                     if (mlProduct.getPrice() == null) {
                         localProduct.setPrevPrice(localProduct.getCurPrice());
                         localProduct.setCurPrice(
@@ -99,8 +101,6 @@ public class ProductsChecker {
                         productRepository.save(localProduct);
                         continue;
                     }
-
-                    if (localProduct == null) continue;
 
                     logger.info(
                             "Comparing local product "+

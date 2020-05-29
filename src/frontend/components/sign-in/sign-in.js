@@ -51,9 +51,9 @@ class SingIn extends React.Component {
     handleFormSubmit = (event) => {
         event.preventDefault();
 
-        this.setState({ waitingResponse: true });
-
         if (this.state.credentials.passwordA === this.state.credentials.passwordB) {
+            this.setState({ waitingResponse: true });
+
             this.props.httpRequest('/api/users', 'POST',
                 {
                     username: this.state.credentials.username,
@@ -70,7 +70,7 @@ class SingIn extends React.Component {
                 .finally(_ => this.setState({ waitingResponse: false }));
         }
         else {
-            this.setState({ hasError: true, error: 'Las contraseñas no coinciden' });
+            this.setState({ hasError: true, error: { message: 'Las contraseñas no coinciden' } });
         }
     }
 

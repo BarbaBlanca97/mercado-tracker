@@ -62,7 +62,7 @@ public class MailSender {
 
     public void sendNotification(UserEntity to, ProductEntity product) throws IOException {
         if (!to.getVerified()) {
-            log.info("El usuario"+ to.getId() +" no está verificado, no se enviará la noctificacion");
+            log.info("El usuario"+ to.getId() +" no está verificado, no se enviará la notificacion");
             return;
         }
 
@@ -79,7 +79,7 @@ public class MailSender {
         if (product.getCurPrice().getCurrency()
                 .equals(product.getPrevPrice().getCurrency())) {
             if (product.getCurPrice().getAmount() > product.getPrevPrice().getAmount()) {
-                title = "Tu proudcto subió de precio";
+                title = "Tu producto subió de precio";
             }
             else {
                 title = "Tu producto bajó de precio";
